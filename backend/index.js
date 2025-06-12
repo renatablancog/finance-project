@@ -1,6 +1,7 @@
 const { json } = require('body-parser');
 const express = require('express');
 const cors = require('cors');
+const moment = require('moment');
 
 const app = express();
 app.use(cors());
@@ -13,6 +14,7 @@ let movements = [
     concept: 'Nominee',
     amount: 3000,
     income: true,
+    dom: moment().format('dd MM YYYY'),
   },
   {
     id: '2',
@@ -20,6 +22,7 @@ let movements = [
     concept: 'Dog food',
     amount: 800,
     income: false,
+    dom: moment().format('dd MM YYYY'),
   },
   {
     id: '3',
@@ -27,6 +30,7 @@ let movements = [
     concept: 'Sunscreen',
     amount: 400,
     income: false,
+    dom: moment().format('dd MM YYYY'),
   },
 ];
 
@@ -61,6 +65,8 @@ app.get('/movements/incomes', function (request, response) {
 
 app.delete('/movements/:id', function (request, response) {
   const { id } = request.params;
+  console.log(id);
+
   const updatedMovements = movements.filter((movement) => movement.id !== id);
   movements = [...updatedMovements];
 
@@ -71,10 +77,12 @@ app.post('/movements', function (request, response) {
   console.log('body:', request.body);
   const { category, concept, amount, income } = request.body;
   const newMovement = {
+    id: (movements.length + 1).toString(),
     category,
     concept,
     amount,
     income,
+    dom: moment().format('dd MM YYYY'),
   };
   // Insert to DB
   movements.push(newMovement);

@@ -1,7 +1,16 @@
 import React from 'react';
 import { FaMoneyBillTransfer } from 'react-icons/fa6';
+import { RiDeleteBinLine } from 'react-icons/ri';
 
-export default function MovementItem({ category, concept, amount, income }) {
+export default function MovementItem({
+  id,
+  date,
+  category,
+  concept,
+  amount,
+  income,
+  handleDeleteMovement,
+}) {
   const badgeStyles = {
     green: 'badge badge-success',
     red: 'badge badge-error',
@@ -11,8 +20,8 @@ export default function MovementItem({ category, concept, amount, income }) {
 
   return (
     <>
-      <li className='p-4 pb-1 text-xs opacity-60 tracking-wide'>January</li>
-      <li className='list-row '>
+      <span className='p-4 pb-1 text-xs opacity-60 tracking-wide'>{date}</span>
+      <span className='list-row '>
         <div>
           <FaMoneyBillTransfer />
         </div>
@@ -25,7 +34,12 @@ export default function MovementItem({ category, concept, amount, income }) {
             {amount}
           </div>
         </div>
-      </li>
+        <div
+          className='cursor-pointer'
+          onClick={() => handleDeleteMovement(id)}>
+          <RiDeleteBinLine />
+        </div>
+      </span>
     </>
   );
 }

@@ -30,6 +30,44 @@ function App() {
     setMovements(data.movements);
   }
 
+  async function handleMovementFormSubmit(
+    categoryValue,
+    conceptValue,
+    amountValue,
+    isIncomeValue
+  ) {
+    // console.log(categoryValue);
+
+    //to-do: validacion de datos
+
+    const newMovement = {
+      category: categoryValue,
+      concept: conceptValue,
+      amount: amountValue,
+      income: isIncomeValue,
+    };
+
+    const { data } = await axios.post(
+      'http://localhost:3001/movements',
+      newMovement
+    );
+
+    if (data) {
+      console.log(data);
+      setMovements(data.movements);
+    }
+  }
+
+  async function handleDeleteMovement(id) {
+    const { data } = await axios.delete(
+      `http://localhost:3001/movements/${id}`
+    );
+
+    if (data) {
+      setMovements(data.movements);
+    }
+  }
+
   return (
     <div className='mx-18 my-10'>
       <div className='text-7xl mb-5'>🏦</div>
@@ -39,8 +77,11 @@ function App() {
       </div>
       <div className='divider divider-default'>{date}</div>
       <div className='flex'>
-        <MovementForm />
-        <MovementList movements={movements} />
+        <MovementForm handleSubmit={handleMovementFormSubmit} />
+        <MovementList
+          movements={movements}
+          handleDeleteMovement={handleDeleteMovement}
+        />
       </div>
     </div>
   );

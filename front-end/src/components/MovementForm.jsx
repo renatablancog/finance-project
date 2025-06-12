@@ -2,7 +2,7 @@ import React from 'react';
 import { useRef } from 'react';
 import axios from 'axios';
 
-function MovementForm() {
+function MovementForm({ handleSubmit }) {
   /**
    * Crear las ref a los valores del form
    * Crear una funcion que valide los valores de las ref
@@ -14,30 +14,15 @@ function MovementForm() {
   const refAmount = useRef('');
   const refIsIncome = useRef('');
 
-  async function handleSubmit(e) {
+  function onSubmit(e) {
     e.preventDefault();
 
     const categoryValue = refCategory.current.value;
     const conceptValue = refConcept.current.value;
     const amountValue = refAmount.current.value;
-    const isIncomeValue = Boolean(refIsIncome.current.value);
-    // console.log(categoryValue);
+    const isIncomeValue = refIsIncome.current.value === 'true' ? true : false;
 
-    //to-do: validacion de datos
-
-    const newMovement = {
-      category: categoryValue,
-      concept: conceptValue,
-      amount: amountValue,
-      income: isIncomeValue,
-    };
-
-    const { data } = await axios.post(
-      'http://localhost:3001/movements',
-      newMovement
-    );
-
-    console.log(data);
+    handleSubmit(categoryValue, conceptValue, amountValue, isIncomeValue);
   }
 
   return (
@@ -98,7 +83,7 @@ function MovementForm() {
         <button
           type='submit'
           className='btn btn-neutral btn-outline mt-1'
-          onClick={(e) => handleSubmit(e)}>
+          onClick={(e) => onSubmit(e)}>
           Add
         </button>
       </fieldset>
