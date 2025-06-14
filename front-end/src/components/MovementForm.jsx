@@ -1,6 +1,8 @@
-import { useRef } from 'react';
+import { useRef, useContext } from 'react';
+import { MovementsContext } from '../context/movementsContext';
 
-function MovementForm({ handleSubmit }) {
+function MovementForm() {
+  const { handleMovementFormSubmit } = useContext(MovementsContext);
   /**
    * Crear las ref a los valores del form
    * Crear una funcion que valide los valores de las ref
@@ -20,7 +22,12 @@ function MovementForm({ handleSubmit }) {
     const amountValue = refAmount.current.value;
     const isIncomeValue = refIsIncome.current.value === 'true' ? true : false;
 
-    handleSubmit(categoryValue, conceptValue, amountValue, isIncomeValue);
+    handleMovementFormSubmit(
+      categoryValue,
+      conceptValue,
+      amountValue,
+      isIncomeValue
+    );
   }
 
   return (

@@ -16,6 +16,30 @@ function MovementsProvider({ children }) {
       //3.
       setMovements(data.movements);
     },
+    handleMovementFormSubmit: async function (
+      categoryValue,
+      conceptValue,
+      amountValue,
+      isIncomeValue
+    ) {
+      // console.log(categoryValue);
+
+      //to-do: validacion de datos
+
+      const newMovement = {
+        category: categoryValue,
+        concept: conceptValue,
+        amount: amountValue,
+        income: isIncomeValue,
+      };
+
+      const { data } = await axios.post(`${BASE_URL}/movements`, newMovement);
+
+      if (data) {
+        console.log(data);
+        setMovements(data.movements);
+      }
+    },
 
     movements,
   };

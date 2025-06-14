@@ -17,31 +17,6 @@ function App() {
     fetchMovements();
   }, []);
 
-  async function handleMovementFormSubmit(
-    categoryValue,
-    conceptValue,
-    amountValue,
-    isIncomeValue
-  ) {
-    // console.log(categoryValue);
-
-    //to-do: validacion de datos
-
-    const newMovement = {
-      category: categoryValue,
-      concept: conceptValue,
-      amount: amountValue,
-      income: isIncomeValue,
-    };
-
-    const { data } = await axios.post(`${BASE_URL}/movements`, newMovement);
-
-    if (data) {
-      console.log(data);
-      setMovements(data.movements);
-    }
-  }
-
   async function handleDeleteMovement(id) {
     const { data } = await axios.delete(`${BASE_URL}/movements/${id}`);
 
@@ -59,7 +34,7 @@ function App() {
       </div>
       <div className='divider divider-default'>{date}</div>
       <div className='flex'>
-        <MovementForm handleSubmit={handleMovementFormSubmit} />
+        <MovementForm />
         <MovementList
           movements={movements}
           handleDeleteMovement={handleDeleteMovement}
