@@ -1,6 +1,4 @@
-import React from 'react';
 import { useRef } from 'react';
-import axios from 'axios';
 
 function MovementForm({ handleSubmit }) {
   /**
