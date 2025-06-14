@@ -40,7 +40,13 @@ function MovementsProvider({ children }) {
         setMovements(data.movements);
       }
     },
+    handleDeleteMovement: async function (id) {
+      const { data } = await axios.delete(`${BASE_URL}/movements/${id}`);
 
+      if (data) {
+        setMovements(data.movements);
+      }
+    },
     movements,
   };
 
