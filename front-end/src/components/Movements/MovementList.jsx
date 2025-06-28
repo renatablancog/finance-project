@@ -1,7 +1,7 @@
 import React from 'react';
 import MovementItem from './MovementItem';
 import { useContext, useEffect } from 'react';
-import { MovementsContext } from '../context/movementsContext';
+import { MovementsContext } from '../../context/movementsContext';
 
 function MovementList() {
   const { fetchMovements, movements, handleDeleteMovement } =

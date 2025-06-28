@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
-import { Link, Outlet } from 'react-router';
+import { Link, Outlet, useLocation } from 'react-router';
+import Breadcrumb from '../components/UI/Breadcrumb';
 
 const routeItems = [
   {
@@ -15,7 +16,8 @@ const routeItems = [
 
 export default function MainLayout() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
+  let location = useLocation();
+  let styleActive = '';
   function toggleDrawer() {
     setIsDrawerOpen(!isDrawerOpen);
   }
@@ -27,11 +29,13 @@ export default function MainLayout() {
         type='checkbox'
         className='drawer-toggle relative'
         checked={isDrawerOpen}
+        onChange={toggleDrawer}
       />
       <label
         htmlFor='my-drawer'
         className='m-2 btn btn-square btn-ghost drawer-button absolute'
-        onClick={toggleDrawer}>
+        // onClick={toggleDrawer}
+      >
         <svg
           xmlns='http://www.w3.org/2000/svg'
           fill='none'
@@ -48,6 +52,7 @@ export default function MainLayout() {
       <div className='drawer-content'>
         {/* Page content here */}
         <div className='mx-18 my-10'>
+          <Breadcrumb breadcrumbs={location.pathname} />
           <Outlet />
         </div>
       </div>
@@ -56,11 +61,18 @@ export default function MainLayout() {
           htmlFor='my-drawer'
           aria-label='close sidebar'
           className='drawer-overlay'></label>
-        <ul className='menu bg-base-200 text-base-content min-h-full w-80 p-4'>
+        <ul className='menu bg-base-200 text-base-content min-h-full w-50 p-4 '>
           {/* Sidebar content here */}
           {routeItems.map((item, i) => {
+            styleActive =
+              location.pathname === item.path ? 'font-bold underline' : '';
+
             return (
-              <Link onClick={toggleDrawer} to={`${item.path}`} key={i}>
+              <Link
+                className={`mb-2 text-lg ${styleActive}`}
+                onClick={toggleDrawer}
+                to={`${item.path}`}
+                key={i}>
                 {item.title}
               </Link>
             );
@@ -70,3 +82,7 @@ export default function MainLayout() {
     </div>
   );
 }
+/**
+ * cuando estemos en '/' subrayar el Link correspondiente
+ *
+ */

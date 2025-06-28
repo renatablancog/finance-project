@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { pie, arc, PieArcDatum } from 'd3';
 import { ClientTooltip, TooltipContent, TooltipTrigger } from './Tooltip';
 import { useContext } from 'react';
-import { MovementsContext } from '../context/movementsContext';
+import { MovementsContext } from '../../context/movementsContext';
 
 type DataItem = {
   name: string;

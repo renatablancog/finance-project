@@ -16,17 +16,6 @@ function MovementDetailsPage() {
 
   return (
     <div className='flex flex-col'>
-      <div className='breadcrumbs text-sm'>
-        <ul>
-          <li>
-            <Link to='/'>Home</Link>
-          </li>
-          <li>
-            <Link to='/movements'>Movements</Link>
-          </li>
-          <li>Movement: {movement.concept}</li>
-        </ul>
-      </div>
       <div className='mt-8'>
         <h2>
           <span className='font-bold'>Concept:</span> {movement.concept}

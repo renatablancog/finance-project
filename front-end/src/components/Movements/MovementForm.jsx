@@ -1,5 +1,5 @@
 import { useRef, useContext } from 'react';
-import { MovementsContext } from '../context/movementsContext';
+import { MovementsContext } from '../../context/movementsContext';
 
 function MovementForm() {
   const { handleMovementFormSubmit } = useContext(MovementsContext);

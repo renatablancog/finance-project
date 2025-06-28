@@ -1,6 +1,6 @@
 import React from 'react';
 import { useContext } from 'react';
-import { MovementsContext } from '../context/movementsContext';
+import { MovementsContext } from '../../context/movementsContext';
 
 function TotalMoneyCard() {
   const { movements } = useContext(MovementsContext);

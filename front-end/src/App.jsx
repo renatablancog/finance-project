@@ -1,6 +1,8 @@
-import PieChart from './components/PieChart';
+import PieChart from './components/Charts/PieChart';
 import { useEffect, useContext } from 'react';
 import { MovementsContext } from './context/movementsContext';
+import Title from './components/UI/Title';
+import Card from './components/UI/Card';
 
 function App() {
   const { movements, fetchMovements } = useContext(MovementsContext);
@@ -18,20 +20,14 @@ function App() {
 
   return (
     <div>
-      <h1 className='text-2xl mb-6'> Main Dashboard</h1>
+      <Title title='Main Dashboard' icon='📊' />
       <div className='grid grid-cols-3 gap-4'>
-        <div className='card w-full bg-base-100 shadow-sm'>
-          <div className='card-body'>
-            <span className='text-center'>Income Tracking</span>{' '}
-            <PieChart movements={incomes} />
-          </div>
-        </div>
-        <div className='card w-full bg-base-100 shadow-sm'>
-          <div className='card-body'>
-            <span className='text-center '>Expenses Tracking</span>{' '}
-            <PieChart movements={expenses} />
-          </div>
-        </div>
+        <Card title='Income Tracking'>
+          <PieChart movements={incomes} />
+        </Card>
+        <Card title='Expenses Tracking'>
+          <PieChart movements={expenses} />
+        </Card>
       </div>
     </div>
   );
