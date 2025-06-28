@@ -10,14 +10,14 @@ function Breadcrumb({ breadcrumbs }) {
   }
 
   return (
-    <div className='breadcrumbs text-sm'>
+    <div className='breadcrumbs text-sm mb-5'>
       <ul className='capitalize'>
         {locationsLevels.map((level, index) => {
           if (locationsLevels.length - 1 === index) {
-            return <li>{level}</li>;
+            return <li key={index}> {level === '' ? 'Home' : level}</li>;
           } else {
             return (
-              <li>
+              <li key={index}>
                 <Link to={level === '' ? '/' : `/${level}`}>
                   {level === '' ? 'Home' : level}
                 </Link>

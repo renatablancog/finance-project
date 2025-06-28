@@ -18,7 +18,7 @@ function TotalMoneyCard() {
 
   return (
     <div
-      className={`card w-50 mx-7 bg-card-xs shadow-sm text-white ${chooseColor}`}>
+      className={`card w-50 mx-7 bg-card-xs shadow-sm mb-6 text-white ${chooseColor}`}>
       <div className='card-body'>
         <h2 className='card-title'>Available Money</h2>
         <h3 className='card-title'>{total}</h3>

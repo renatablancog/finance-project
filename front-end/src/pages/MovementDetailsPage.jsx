@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLoaderData } from 'react-router';
 import { Link } from 'react-router';
+import Title from '../components/UI/Title';
 
 function MovementDetailsPage() {
   const { movement } = useLoaderData();
@@ -16,7 +17,8 @@ function MovementDetailsPage() {
 
   return (
     <div className='flex flex-col'>
-      <div className='mt-8'>
+      <Title title='Movement Details' icon='🕵🏽‍♀️' />
+      <div>
         <h2>
           <span className='font-bold'>Concept:</span> {movement.concept}
         </h2>
