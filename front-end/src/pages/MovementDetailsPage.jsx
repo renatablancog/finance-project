@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 
 function MovementDetailsPage() {
   const { movement } = useLoaderData();
+  console.log('movementPage:', movement);
 
   const backgroundColor = {
     green: 'bg-success',
@@ -18,11 +19,13 @@ function MovementDetailsPage() {
     <div className='flex flex-col'>
       <div className='mt-8'>
         <h2>
-          <span className='font-bold'>Concept:</span> {movement.concept}
+          <span className='font-bold'>Concept:</span>{' '}
+          {movement.concept}
         </h2>
 
         <h5>
-          <span className='font-bold'>Movement Date:</span> {movement.dom}
+          <span className='font-bold'>Movement Date:</span>{' '}
+          {movement.dom}
         </h5>
         <h5>
           <span className='font-bold'>Amount</span> ${movement.amount}
