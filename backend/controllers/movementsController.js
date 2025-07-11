@@ -56,17 +56,18 @@ export function deleteMovement(request, response) {
 }
 
 export function addMovement(request, response) {
-  console.log('body:', request.body);
+  console.log('New movement:', request.body);
   const { category, concept, amount, income } = request.body;
   const newMovement = {
     id: (movements.length + 1).toString(),
     category,
     concept,
-    amount,
+    amount: Number(amount),
     income,
     dom: moment().format('dd MM YYYY'),
   };
   // Insert to DB
   movements.push(newMovement);
+  console.log('All movements:', movements);
   response.json({ movements });
 }

@@ -7,6 +7,8 @@ export const MovementsContext = createContext('');
 function MovementsProvider({ children }) {
   // const sharedValue = { number: 5 };
   const [movements, setMovements] = useState([]);
+  const [incomes, setIncomes] = useState({});
+  const [expenses, setExpenses] = useState({});
 
   const sharedValue = {
     //Esta es la funcion que hace fetch, encapsulada dentro de un objeto, para ponerla a disposición de quien la necesite
@@ -33,7 +35,10 @@ function MovementsProvider({ children }) {
         income: isIncomeValue,
       };
 
-      const { data } = await axios.post(`${BASE_URL}/movements`, newMovement);
+      const { data } = await axios.post(
+        `${BASE_URL}/movements`,
+        newMovement
+      );
 
       if (data) {
         console.log(data);
@@ -41,13 +46,31 @@ function MovementsProvider({ children }) {
       }
     },
     handleDeleteMovement: async function (id) {
-      const { data } = await axios.delete(`${BASE_URL}/movements/${id}`);
+      const { data } = await axios.delete(
+        `${BASE_URL}/movements/${id}`
+      );
 
       if (data) {
         setMovements(data.movements);
       }
     },
+    fetchIncomes: async function () {
+      const { data } = await axios.get(`${BASE_URL}/incomes/summary`);
+      // console.log(data);
+      //3.
+      setIncomes(data);
+    },
+    fetchExpenses: async function () {
+      const { data } = await axios.get(
+        `${BASE_URL}/expenses/summary`
+      );
+      // console.log(data);
+      //3.
+      setExpenses(data);
+    },
     movements,
+    incomes,
+    expenses,
   };
 
   return (

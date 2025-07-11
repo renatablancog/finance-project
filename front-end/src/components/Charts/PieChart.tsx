@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 import { pie, arc, PieArcDatum } from 'd3';
-import { ClientTooltip, TooltipContent, TooltipTrigger } from './Tooltip';
+import {
+  ClientTooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from './Tooltip';
 import { useContext } from 'react';
 import { MovementsContext } from '../../context/movementsContext';
 
@@ -23,30 +27,28 @@ function getRandomKey() {
   return keys[Math.floor(Math.random() * keys.length)];
 }
 
-let data: DataItem[] = [];
-type Movement = {
-  id: string;
-  category: string;
-  concept: string;
-  amount: number;
-  income: boolean;
-  dom: Date;
-};
+// let data: DataItem[] = [];
+
+// type Movement = {
+//   name: number;
+// };
 
 interface PieChartProps {
-  movements: Movement[];
+  movements: Record<string, number>;
 }
 
 export default function PieChart(props: PieChartProps) {
-  data = props.movements.map((movement) => {
-    return {
-      name: movement.category,
-      value: movement.amount,
-      colorFrom: colors[getRandomKey()],
-      colorTo: colors[getRandomKey()],
-    };
-  });
-
+  const data = Object.entries(props.movements).map(
+    ([name, amount]) => {
+      return {
+        name: name,
+        value: amount,
+        colorFrom: colors[getRandomKey()],
+        colorTo: colors[getRandomKey()],
+      };
+    }
+  );
+  console.log(data);
   // Chart dimensions
   const radius = Math.PI * 100;
   const gap = 0.02; // Gap between slices
@@ -79,8 +81,11 @@ export default function PieChart(props: PieChartProps) {
     <div className='p-4'>
       <div className='relative max-w-[16rem] mx-auto'>
         <svg
-          viewBox={`-${radius} -${radius} ${radius * 2} ${radius * 2}`}
-          className='overflow-visible'>
+          viewBox={`-${radius} -${radius} ${radius * 2} ${
+            radius * 2
+          }`}
+          className='overflow-visible'
+        >
           {/* Slices */}
           {arcs.map((d, i) => {
             const midAngle = (d.startAngle + d.endAngle) / 2;
@@ -89,7 +94,10 @@ export default function PieChart(props: PieChartProps) {
               <ClientTooltip key={i}>
                 <TooltipTrigger>
                   <g key={i}>
-                    <path fill={`url(#pieColors-${i})`} d={arcGenerator(d)!} />
+                    <path
+                      fill={`url(#pieColors-${i})`}
+                      d={arcGenerator(d)!}
+                    />
                     <linearGradient
                       id={`pieColors-${i}`}
                       x1='0'
@@ -98,7 +106,8 @@ export default function PieChart(props: PieChartProps) {
                       y2='0'
                       gradientTransform={`rotate(${
                         (midAngle * 180) / Math.PI - 90
-                      }, 0.5, 0.5)`}>
+                      }, 0.5, 0.5)`}
+                    >
                       <stop
                         offset='0%'
                         stopColor={'currentColor'}
@@ -144,7 +153,8 @@ export default function PieChart(props: PieChartProps) {
               <div key={i}>
                 <div
                   className='absolute transform -translate-x-1/2 -translate-y-1/2'
-                  style={{ left: valueLeft, top: valueTop }}>
+                  style={{ left: valueLeft, top: valueTop }}
+                >
                   {d.data.value}
                 </div>
                 <div
@@ -155,7 +165,8 @@ export default function PieChart(props: PieChartProps) {
                     transform: 'translate(-50%, -50%)',
                     marginLeft: x > 0 ? '2px' : '-2px',
                     marginTop: y > 0 ? '2px' : '-2px',
-                  }}>
+                  }}
+                >
                   {d.data.name}
                 </div>
               </div>
