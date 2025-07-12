@@ -71,3 +71,43 @@ export function addMovement(request, response) {
   console.log('All movements:', movements);
   response.json({ movements });
 }
+
+export function getMonthlySummary(request, response) {
+  const monthlySummary = {};
+
+  movements.forEach((movement, index) => {
+    const month = moment(movement.dom).format('MMMM');
+    console.log('month', month);
+
+    if (!monthlySummary[month]) {
+      monthlySummary[month] = {
+        incomes: 0,
+        expenses: 0,
+      };
+    }
+
+    if (movement.income) {
+      monthlySummary[month].incomes += movement.income;
+    } else {
+      monthlySummary[month].expenses += movement.income;
+    }
+  });
+  console.log(monthlySummary);
+
+  response.json(monthlySummary);
+}
+
+// const monthlySummary = [
+//   {
+//     january: {
+//       incomes: 1000,
+//       expenses: 200,
+//     },
+//   },
+//   {
+//     february: {
+//       incomes: 1000,
+//       expenses: 200,
+//     },
+//   },
+// ];

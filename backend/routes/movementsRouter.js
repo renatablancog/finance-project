@@ -6,20 +6,23 @@ import {
   getIncomes,
   deleteMovement,
   addMovement,
+  getMonthlySummary,
 } from '../controllers/movementsController.js';
 
 const movementsRouter = Router();
 
-movementsRouter.get('/savings', getSavings);
-
 movementsRouter.get('/', getMovements);
 
-movementsRouter.get('/:id', getMovementById);
+movementsRouter.post('/', addMovement);
 
 movementsRouter.get('/incomes', getIncomes);
 
+movementsRouter.get('/savings', getSavings);
+
+movementsRouter.get('/monthly-summary', getMonthlySummary);
+
 movementsRouter.delete('/:id', deleteMovement);
 
-movementsRouter.post('/', addMovement);
+movementsRouter.get('/:id', getMovementById);
 
 export default movementsRouter;

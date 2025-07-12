@@ -7,7 +7,7 @@ let movements = [
     concept: 'Nominee',
     amount: 3000,
     income: true,
-    dom: moment().format('dd MM YYYY'),
+    dom: moment().format('YYYY-MM-DD'),
   },
   {
     id: '2',
@@ -15,7 +15,7 @@ let movements = [
     concept: 'Dog food',
     amount: 800,
     income: false,
-    dom: moment().format('dd MM YYYY'),
+    dom: moment().format('YYYY-MM-DD'),
   },
   {
     id: '3',
@@ -23,7 +23,7 @@ let movements = [
     concept: 'Sunscreen',
     amount: 400,
     income: false,
-    dom: moment().format('dd MM YYYY'),
+    dom: moment().format('YYYY-MM-DD'),
   },
 ];
 
