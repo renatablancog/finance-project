@@ -9,6 +9,7 @@ function MovementsProvider({ children }) {
   const [movements, setMovements] = useState([]);
   const [incomes, setIncomes] = useState({});
   const [expenses, setExpenses] = useState({});
+  const [savings, setSavings] = useState(0);
 
   const sharedValue = {
     //Esta es la funcion que hace fetch, encapsulada dentro de un objeto, para ponerla a disposición de quien la necesite
@@ -39,6 +40,7 @@ function MovementsProvider({ children }) {
 
       if (response.status === 200) {
         await sharedValue.fetchMovements();
+        await sharedValue.fetchSavings();
       }
     },
     handleDeleteMovement: async function (id) {
@@ -46,6 +48,7 @@ function MovementsProvider({ children }) {
 
       if (response.status === 200) {
         await sharedValue.fetchMovements();
+        await sharedValue.fetchSavings();
       }
     },
     fetchIncomes: async function () {
@@ -60,9 +63,15 @@ function MovementsProvider({ children }) {
       //3.
       setExpenses(data);
     },
+    fetchSavings: async function () {
+      const { data } = await axios.get(`${BASE_URL}/movements/savings`);
+      console.log('savings:', data.savings);
+      setSavings(data.savings);
+    },
     movements,
     incomes,
     expenses,
+    savings,
   };
 
   return (

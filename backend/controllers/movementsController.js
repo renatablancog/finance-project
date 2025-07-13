@@ -16,10 +16,20 @@ export function getMovements(request, response) {
 }
 
 export function getSavings(request, response) {
-  response.json({
-    savings: movements.reduce((acc, curr) => {
-      return curr.income === true ? (acc += curr.amount) : (acc -= curr.amount);
-    }, 0),
+  const query = `SELECT 
+      SUM(CASE 
+        WHEN income = 0 THEN -amount 
+        ELSE amount 
+      END) AS savings
+    FROM movements`;
+
+  connection.get(query, (err, row) => {
+    if (err) {
+      response.status(500).json({ error: err.message });
+      return;
+    }
+
+    response.status(200).json(row);
   });
 }
 
