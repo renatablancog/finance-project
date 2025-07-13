@@ -1,14 +1,13 @@
 import movements from '../db.js';
 import moment from 'moment';
+import { connection } from '../session.js';
 /* import { json } from 'express';
 app.use(json());
  */
 export function getSavings(request, response) {
   response.json({
     savings: movements.reduce((acc, curr) => {
-      return curr.income === true
-        ? (acc += curr.amount)
-        : (acc -= curr.amount);
+      return curr.income === true ? (acc += curr.amount) : (acc -= curr.amount);
     }, 0),
   });
 }
@@ -59,7 +58,6 @@ export function addMovement(request, response) {
   console.log('New movement:', request.body);
   const { category, concept, amount, income } = request.body;
   const newMovement = {
-    id: (movements.length + 1).toString(),
     category,
     concept,
     amount: Number(amount),
@@ -67,47 +65,36 @@ export function addMovement(request, response) {
     dom: moment().format('dd MM YYYY'),
   };
   // Insert to DB
-  movements.push(newMovement);
-  console.log('All movements:', movements);
-  response.json({ movements });
+  // movements.push(newMovement);
+  const mutation = `INSERT INTO movements (category, concept, amount, income, date) VALUES (?,?,?,?,?)`;
+
+  connection.run(
+    mutation,
+    [
+      newMovement.category,
+      newMovement.concept,
+      newMovement.amount,
+      newMovement.income,
+      newMovement.dom,
+    ],
+    (err) => {
+      if (err) {
+        response.status(500).json({ error: err.message });
+        return;
+      }
+
+      response.status(201).json({ message: 'Movement added!' });
+    }
+  );
 }
 
 export function getMonthlySummary(request, response) {
-  const monthlySummary = {};
-
-  movements.forEach((movement, index) => {
-    const month = moment(movement.dom).format('MMMM');
-    console.log('month', month);
-
-    if (!monthlySummary[month]) {
-      monthlySummary[month] = {
-        incomes: 0,
-        expenses: 0,
-      };
-    }
-
-    if (movement.income) {
-      monthlySummary[month].incomes += movement.income;
-    } else {
-      monthlySummary[month].expenses += movement.income;
-    }
-  });
-  console.log(monthlySummary);
-
+  const monthlySummary = [
+    {
+      incomes: 8000,
+      expenses: 700,
+      month: 'January',
+    },
+  ];
   response.json(monthlySummary);
 }
-
-// const monthlySummary = [
-//   {
-//     january: {
-//       incomes: 1000,
-//       expenses: 200,
-//     },
-//   },
-//   {
-//     february: {
-//       incomes: 1000,
-//       expenses: 200,
-//     },
-//   },
-// ];

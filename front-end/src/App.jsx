@@ -21,11 +21,6 @@ function App() {
   return (
     <div>
       <Title title='Main Dashboard' icon='📊' />
-      <div className='flex gap-4'>
-        <TotalMoneyCard />
-        <TotalMoneyCard />
-        <TotalMoneyCard />
-      </div>
       <div className='grid grid-cols-3 gap-4'>
         <Card title='Income Tracking'>
           <PieChart movements={incomes} />
