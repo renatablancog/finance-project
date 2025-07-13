@@ -3,6 +3,7 @@ import { MovementsContext } from '../../context/movementsContext';
 
 function MovementForm() {
   const { handleMovementFormSubmit } = useContext(MovementsContext);
+
   /**
    * Crear las ref a los valores del form
    * Crear una funcion que valide los valores de las ref

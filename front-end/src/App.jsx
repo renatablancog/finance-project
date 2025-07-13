@@ -9,13 +9,13 @@ function App() {
   const { fetchIncomes, fetchExpenses, incomes, expenses } =
     useContext(MovementsContext);
 
-  useEffect(() => {
-    fetchIncomes();
-  }, []);
+  // useEffect(() => {
+  //   fetchIncomes();
+  // }, []);
 
-  useEffect(() => {
-    fetchExpenses();
-  }, []);
+  // useEffect(() => {
+  //   fetchExpenses();
+  // }, []);
 
   console.log('incomes:', incomes);
   return (

@@ -21,7 +21,7 @@ function MovementList() {
             <li key={movement.id}>
               <MovementItem
                 id={movement.id}
-                date={movement.dom}
+                date={movement.date}
                 category={movement.category}
                 concept={movement.concept}
                 amount={movement.amount}

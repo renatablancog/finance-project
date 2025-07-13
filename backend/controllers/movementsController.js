@@ -1,9 +1,20 @@
-import movements from '../db.js';
 import moment from 'moment';
 import { connection } from '../session.js';
-/* import { json } from 'express';
-app.use(json());
- */
+
+export function getMovements(request, response) {
+  // Go to DB to retrieve all movements
+  const query = 'SELECT * FROM movements';
+
+  connection.all(query, (err, rows) => {
+    if (err) {
+      response.status(500).json({ error: err.message });
+      return;
+    }
+
+    response.status(200).json(rows);
+  });
+}
+
 export function getSavings(request, response) {
   response.json({
     savings: movements.reduce((acc, curr) => {
@@ -12,17 +23,19 @@ export function getSavings(request, response) {
   });
 }
 
-export function getMovements(request, response) {
-  // Go to DB to retrieve all movements
-  response.json({ movements });
-}
-
 export function getMovementById(request, response) {
   const { id } = request.params;
 
-  const movement = movements.find((movement) => movement.id === id);
-  console.log(movement);
-  response.json({ movement });
+  const query = 'SELECT * FROM movements WHERE id=(?)';
+
+  connection.get(query, id, (err, row) => {
+    if (err) {
+      response.status(500).json({ error: err.message });
+      return;
+    }
+
+    response.status(200).json(row);
+  });
 }
 
 export function getIncomes(request, response) {
@@ -33,25 +46,17 @@ export function getIncomes(request, response) {
 
 export function deleteMovement(request, response) {
   const { id } = request.params;
-  console.log(id);
 
-  const index = movements.findIndex((movement) => movement.id === id);
+  const mutation = 'DELETE FROM movements WHERE id=(?)';
 
-  if (index === -1) {
-    return response.status(404).json({
-      error: 'Movement not found',
-    });
-  }
+  connection.run(mutation, id, (err, rows) => {
+    if (err) {
+      response.status(500).json({ error: err.message });
+      return;
+    }
 
-  movements.splice(index, 1); // ✅ Modify in place
-
-  /*   const updatedMovements = movements.filter(
-    (movement) => movement.id !== id
-  );
-
-  movements = [...updatedMovements];
- */
-  response.json({ movements });
+    response.status(200).json({ message: 'Movement deleted', deletedId: id });
+  });
 }
 
 export function addMovement(request, response) {
@@ -77,13 +82,13 @@ export function addMovement(request, response) {
       newMovement.income,
       newMovement.dom,
     ],
-    (err) => {
+    (err, rows) => {
       if (err) {
         response.status(500).json({ error: err.message });
         return;
       }
 
-      response.status(201).json({ message: 'Movement added!' });
+      response.status(200).json({ message: 'movement added' });
     }
   );
 }

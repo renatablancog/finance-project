@@ -4,6 +4,7 @@ import { MovementsContext } from '../../context/movementsContext';
 
 function TotalMoneyCard() {
   const { movements } = useContext(MovementsContext);
+  console.log(movements);
   const total = movements.reduce(
     (acc, curr) => (curr.income ? (acc += curr.amount) : (acc -= curr.amount)),
     0

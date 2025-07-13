@@ -1,6 +1,3 @@
-import movements from '../db.js';
-import { json } from 'express';
-
 export function getExpensesSummary(req, res) {
   const categoryTotals = {};
 

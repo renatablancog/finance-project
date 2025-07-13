@@ -1,4 +1,3 @@
-import movements from '../db.js';
 import { json } from 'express';
 
 export function getIncomesSummary(req, res) {

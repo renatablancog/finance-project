@@ -21,13 +21,11 @@ function MovementDetailsPage() {
       <Title title='Movement Details' icon='🕵🏽‍♀️' />
       <div>
         <h2>
-          <span className='font-bold'>Concept:</span>{' '}
-          {movement.concept}
+          <span className='font-bold'>Concept:</span> {movement.concept}
         </h2>
 
         <h5>
-          <span className='font-bold'>Movement Date:</span>{' '}
-          {movement.dom}
+          <span className='font-bold'>Movement Date:</span> {movement.date}
         </h5>
         <h5>
           <span className='font-bold'>Amount</span> ${movement.amount}

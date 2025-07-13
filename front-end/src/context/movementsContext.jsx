@@ -14,9 +14,9 @@ function MovementsProvider({ children }) {
     //Esta es la funcion que hace fetch, encapsulada dentro de un objeto, para ponerla a disposición de quien la necesite
     fetchMovements: async function () {
       const { data } = await axios.get(`${BASE_URL}/movements`);
-      // console.log(data);
+      console.log(data);
       //3.
-      setMovements(data.movements);
+      setMovements(data);
     },
     handleMovementFormSubmit: async function (
       categoryValue,
@@ -35,23 +35,17 @@ function MovementsProvider({ children }) {
         income: isIncomeValue,
       };
 
-      const { data } = await axios.post(
-        `${BASE_URL}/movements`,
-        newMovement
-      );
+      const response = await axios.post(`${BASE_URL}/movements`, newMovement);
 
-      if (data) {
-        console.log(data);
-        setMovements(data.movements);
+      if (response.status === 200) {
+        await sharedValue.fetchMovements();
       }
     },
     handleDeleteMovement: async function (id) {
-      const { data } = await axios.delete(
-        `${BASE_URL}/movements/${id}`
-      );
+      const response = await axios.delete(`${BASE_URL}/movements/${id}`);
 
-      if (data) {
-        setMovements(data.movements);
+      if (response.status === 200) {
+        await sharedValue.fetchMovements();
       }
     },
     fetchIncomes: async function () {
@@ -61,9 +55,7 @@ function MovementsProvider({ children }) {
       setIncomes(data);
     },
     fetchExpenses: async function () {
-      const { data } = await axios.get(
-        `${BASE_URL}/expenses/summary`
-      );
+      const { data } = await axios.get(`${BASE_URL}/expenses/summary`);
       // console.log(data);
       //3.
       setExpenses(data);
