@@ -2,7 +2,10 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.jsx';
 import MovementsProvider from './context/movementsContext.jsx';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from 'react-router-dom';
 import MovementsPage from './pages/MovementsPage.jsx';
 import MainLayout from './layouts/MainLayout.jsx';
 import MovementDetailsPage from './pages/MovementDetailsPage.jsx';
@@ -30,7 +33,7 @@ const router = createBrowserRouter([
                 `http://localhost:3001/movements/${params.id}`
               );
               console.log(data);
-              return { movement: data.movement[0] };
+              return { movement: data.movement };
             },
             Component: MovementDetailsPage,
           },

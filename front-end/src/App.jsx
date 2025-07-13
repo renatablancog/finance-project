@@ -3,22 +3,21 @@ import { useEffect, useContext } from 'react';
 import { MovementsContext } from './context/movementsContext';
 import Title from './components/UI/Title';
 import Card from './components/UI/Card';
-import TotalMoneyCard from './components/UI/TotalMoneyCard';
+import { useState } from 'react';
 
 function App() {
-  const { movements, fetchMovements } = useContext(MovementsContext);
+  const { fetchIncomes, fetchExpenses, incomes, expenses } =
+    useContext(MovementsContext);
 
   useEffect(() => {
-    fetchMovements();
+    fetchIncomes();
   }, []);
 
-  const incomes = [];
-  const expenses = [];
+  useEffect(() => {
+    fetchExpenses();
+  }, []);
 
-  movements.forEach((movement) =>
-    movement.income ? incomes.push(movement) : expenses.push(movement)
-  );
-
+  console.log('incomes:', incomes);
   return (
     <div>
       <Title title='Main Dashboard' icon='📊' />

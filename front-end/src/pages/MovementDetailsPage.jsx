@@ -5,6 +5,7 @@ import Title from '../components/UI/Title';
 
 function MovementDetailsPage() {
   const { movement } = useLoaderData();
+  console.log('movementPage:', movement);
 
   const backgroundColor = {
     green: 'bg-success',
@@ -20,11 +21,13 @@ function MovementDetailsPage() {
       <Title title='Movement Details' icon='🕵🏽‍♀️' />
       <div>
         <h2>
-          <span className='font-bold'>Concept:</span> {movement.concept}
+          <span className='font-bold'>Concept:</span>{' '}
+          {movement.concept}
         </h2>
 
         <h5>
-          <span className='font-bold'>Movement Date:</span> {movement.dom}
+          <span className='font-bold'>Movement Date:</span>{' '}
+          {movement.dom}
         </h5>
         <h5>
           <span className='font-bold'>Amount</span> ${movement.amount}
