@@ -49,8 +49,15 @@ export function getMovementById(request, response) {
 }
 
 export function getIncomes(request, response) {
-  response.json({
-    incomes: movements.filter((movement) => movement.income),
+  const query = 'SELECT * FROM movements WHERE income=1';
+
+  connection.all(query, (err, rows) => {
+    if (err) {
+      response.status(500).json({ error: err.message });
+      return;
+    }
+
+    response.status(200).json(rows);
   });
 }
 
@@ -65,7 +72,9 @@ export function deleteMovement(request, response) {
       return;
     }
 
-    response.status(200).json({ message: 'Movement deleted', deletedId: id });
+    response
+      .status(200)
+      .json({ message: 'Movement deleted', deletedId: id });
   });
 }
 
@@ -104,12 +113,30 @@ export function addMovement(request, response) {
 }
 
 export function getMonthlySummary(request, response) {
-  const monthlySummary = [
+  const query = `
+  SELECT 
+    (substr(TRIM(date), 6, 5)|| '-' || substr(TRIM(date), 4, 2)) AS YearMonth,
+    SUM(CASE WHEN income != 0 THEN amount ELSE 0 END) AS TotalIncomes,
+    SUM(CASE WHEN income = 0 THEN amount ELSE 0 END) AS TotalExpenses
+    FROM movements
+  GROUP BY YearMonth
+  ORDER BY YearMonth;
+    `;
+
+  connection.all(query, (err, rows) => {
+    if (err) {
+      response.status(500).json({ error: err.message });
+      return;
+    }
+
+    response.status(200).json(rows);
+  });
+  /*   const monthlySummary = [
     {
       incomes: 8000,
       expenses: 700,
+      remaining: 7300,
       month: 'January',
     },
-  ];
-  response.json(monthlySummary);
+  ]; */
 }

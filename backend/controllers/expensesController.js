@@ -1,15 +1,18 @@
-export function getExpensesSummary(req, res) {
-  const categoryTotals = {};
+import { connection } from '../session.js';
 
-  for (const movement of movements) {
-    if (!movement.income) {
-      const { category, amount } = movement;
-      if (!categoryTotals[category]) {
-        categoryTotals[category] = 0;
-      }
-      categoryTotals[category] += amount;
+export function getExpensesSummary(request, response) {
+  const query = `SELECT category, SUM(CASE WHEN income = 0 
+    THEN amount ELSE 0 END) AS categoryTotals 
+    FROM movements
+    GROUP BY category
+    HAVING categoryTotals > 0
+    `;
+
+  connection.all(query, (err, rows) => {
+    if (err) {
+      response.status(500).json({ error: err.message });
     }
-  }
-  console.log(categoryTotals);
-  res.json(categoryTotals);
+
+    response.status(200).json(rows);
+  });
 }
