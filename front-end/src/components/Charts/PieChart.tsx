@@ -9,11 +9,12 @@ import { useContext } from 'react';
 import { MovementsContext } from '../../context/movementsContext';
 
 type DataItem = {
-  name: string;
+  name: string | number;
   value: number;
   colorFrom: string;
   colorTo: string;
 };
+
 const colors = {
   purple: 'text-purple-400',
   pink: 'text-pink-400',
@@ -27,28 +28,20 @@ function getRandomKey() {
   return keys[Math.floor(Math.random() * keys.length)];
 }
 
-// let data: DataItem[] = [];
-
-// type Movement = {
-//   name: number;
-// };
-
 interface PieChartProps {
-  movements: Record<string, number>;
+  movements: Record<string, number | string>[];
 }
 
 export default function PieChart(props: PieChartProps) {
-  const data = Object.entries(props.movements).map(
-    ([name, amount]) => {
-      return {
-        name: name,
-        value: amount,
-        colorFrom: colors[getRandomKey()],
-        colorTo: colors[getRandomKey()],
-      };
-    }
-  );
-  console.log(data);
+  const data = props.movements.map(({ category, categoryTotals }) => {
+    return {
+      name: category as string,
+      value: categoryTotals as number,
+      colorFrom: colors[getRandomKey()],
+      colorTo: colors[getRandomKey()],
+    };
+  });
+
   // Chart dimensions
   const radius = Math.PI * 100;
   const gap = 0.02; // Gap between slices

@@ -15,6 +15,16 @@ function MovementList() {
   return (
     <div className='flex flex-col mx-7 my-6'>
       <div className='text-l font-bold mb-2 '>Last 3 Movements</div>
+      {/* pagination */}
+      <div className='join grid grid-cols-2 mb-2'>
+        <button className='join-item btn text-primary text-xs btn-xs'>
+          Previous
+        </button>
+        <button className='join-item btn text-primary text-xs btn-xs'>
+          Next
+        </button>
+      </div>
+
       <ul className='w-63 list bg-base-100 rounded-box shadow-md'>
         {movements.map((movement) => {
           return (

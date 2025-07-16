@@ -3,7 +3,12 @@ import { connection } from '../session.js';
 
 export function getMovements(request, response) {
   // Go to DB to retrieve all movements
-  const query = 'SELECT * FROM movements';
+  const { limit, offset } = request.query;
+  console.log(request.query);
+
+  const query = `SELECT * FROM movements 
+                  ORDER BY date ASC
+                  LIMIT ${Number(limit)} OFFSET ${Number(offset)}`;
 
   connection.all(query, (err, rows) => {
     if (err) {

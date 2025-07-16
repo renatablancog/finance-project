@@ -3,25 +3,29 @@ import { useEffect, useContext } from 'react';
 import { MovementsContext } from './context/movementsContext';
 import Title from './components/UI/Title';
 import Card from './components/UI/Card';
-import { useState } from 'react';
+import KPICard from './components/UI/KPICard';
 
 function App() {
   const { fetchIncomes, fetchExpenses, incomes, expenses } =
     useContext(MovementsContext);
 
-  // useEffect(() => {
-  //   fetchIncomes();
-  // }, []);
+  useEffect(() => {
+    fetchIncomes();
+  }, []);
 
-  // useEffect(() => {
-  //   fetchExpenses();
-  // }, []);
+  useEffect(() => {
+    fetchExpenses();
+  }, []);
 
-  console.log('incomes:', incomes);
   return (
     <div>
       <Title title='Main Dashboard' icon='📊' />
-      <div className='grid grid-cols-3 gap-4'>
+      <div className='flex gap-4'>
+        <KPICard action='totalAvailableMoney' />
+        <KPICard action='categoryMaxExpense' />
+      </div>
+
+      <div className='grid grid-cols-3 grid-rows-2 gap-4'>
         <Card title='Income Tracking'>
           <PieChart movements={incomes} />
         </Card>
