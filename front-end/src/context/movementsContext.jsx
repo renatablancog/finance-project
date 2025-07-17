@@ -13,16 +13,16 @@ function MovementsProvider({ children }) {
   const [categoryMostExpenses, setCategoryMostExpenses] = useState(
     []
   );
+  const [monthlySummary, setMonthlySummary] = useState([]);
 
   const sharedValue = {
     //Esta es la funcion que hace fetch, encapsulada dentro de un objeto, para ponerla a disposición de quien la necesite
-    fetchMovements: async function (limit = 3, offset = 0) {
+    fetchMovements: async function (limit = 14, offset = 0) {
       const { data } = await axios.get(
         `${BASE_URL}/movements?limit=${limit}&offset=${offset}`
       );
-
-      //3.
       setMovements(data);
+      console.log(data);
     },
     handleMovementFormSubmit: async function (
       categoryValue,
@@ -47,8 +47,7 @@ function MovementsProvider({ children }) {
       );
 
       if (response.status === 200) {
-        await sharedValue.fetchMovements();
-        await sharedValue.fetchSavings();
+        await sharedValue.refetch();
       }
     },
     handleDeleteMovement: async function (id) {
@@ -57,8 +56,7 @@ function MovementsProvider({ children }) {
       );
 
       if (response.status === 200) {
-        await sharedValue.fetchMovements();
-        await sharedValue.fetchSavings();
+        await sharedValue.refetch();
       }
     },
     fetchIncomes: async function () {
@@ -86,11 +84,24 @@ function MovementsProvider({ children }) {
 
       setCategoryMostExpenses(data);
     },
+    fetchMonthlySummary: async function () {
+      const { data } = await axios.get(
+        `${BASE_URL}/movements/monthly-summary`
+      );
+      setMonthlySummary(data);
+    },
+    refetch: async function () {
+      await sharedValue.fetchMovements();
+      await sharedValue.fetchSavings();
+      await sharedValue.fetchCategoryWithMostExpenses();
+      await sharedValue.fetchMonthlySummary();
+    },
     movements,
     incomes,
     expenses,
     savings,
     categoryMostExpenses,
+    monthlySummary,
   };
 
   return (

@@ -10,9 +10,6 @@ function KPICard({ action }) {
     categoryMostExpenses,
   } = useContext(MovementsContext);
 
-  let category = null;
-  let categoryTotals = null;
-
   //KPIS
   const KPIToFetch = {
     totalAvailableMoney: {
@@ -36,9 +33,10 @@ function KPICard({ action }) {
     categoryMostExpenses.length > 0 &&
     action === 'categoryMaxExpense'
   ) {
-    category = categoryMostExpenses[0].category;
-    categoryTotals = categoryMostExpenses[0].categoryTotals;
-    KPIToFetch['categoryMaxExpense'].amount = categoryTotals;
+    KPIToFetch[action].amount =
+      categoryMostExpenses[0].categoryTotals;
+    KPIToFetch[action].title +=
+      ': ' + categoryMostExpenses[0].category;
   }
 
   const backgroundColor = {
@@ -51,11 +49,11 @@ function KPICard({ action }) {
 
   return (
     <div
-      className={`card w-50 bg-card-xs shadow-sm mb-6 text-white ${chooseColor}`}
+      className={`card w-60 bg-card-xs shadow-sm mb-6 text-white ${chooseColor}`}
     >
       <div className='card-body'>
         <h2 className='card-title'>{KPIToFetch[action].title}</h2>
-        <h3 className='card-title'>{KPIToFetch[action].amount}</h3>
+        <h3 className='card-title'>${KPIToFetch[action].amount}</h3>
       </div>
     </div>
   );

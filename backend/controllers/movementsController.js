@@ -4,11 +4,10 @@ import { connection } from '../session.js';
 export function getMovements(request, response) {
   // Go to DB to retrieve all movements
   const { limit, offset } = request.query;
-  console.log(request.query);
 
   const query = `SELECT * FROM movements 
-                  ORDER BY date ASC
-                  LIMIT ${Number(limit)} OFFSET ${Number(offset)}`;
+                  ORDER BY date DESC
+                  LIMIT ${Number(limit)} OFFSET ${Number(offset)} `;
 
   connection.all(query, (err, rows) => {
     if (err) {
@@ -91,7 +90,7 @@ export function addMovement(request, response) {
     concept,
     amount: Number(amount),
     income,
-    dom: moment().format('dd MM YYYY'),
+    dom: moment().format('DD MM YYYY HH:mm:ss'),
   };
   // Insert to DB
   // movements.push(newMovement);

@@ -26,10 +26,10 @@ function App() {
       </div>
 
       <div className='grid grid-cols-3 grid-rows-2 gap-4'>
-        <Card title='Income Tracking'>
+        <Card title='Yearly Income Tracking'>
           <PieChart movements={incomes} />
         </Card>
-        <Card title='Expenses Tracking'>
+        <Card title='Yearly Expenses Tracking'>
           <PieChart movements={expenses} />
         </Card>
       </div>
