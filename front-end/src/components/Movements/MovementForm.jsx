@@ -21,7 +21,8 @@ function MovementForm() {
     const categoryValue = refCategory.current.value;
     const conceptValue = refConcept.current.value;
     const amountValue = refAmount.current.value;
-    const isIncomeValue = refIsIncome.current.value === 'true' ? true : false;
+    const isIncomeValue =
+      refIsIncome.current.value === 'true' ? true : false;
 
     handleMovementFormSubmit(
       categoryValue,
@@ -29,6 +30,12 @@ function MovementForm() {
       amountValue,
       isIncomeValue
     );
+
+    // Clear form inputs
+    refCategory.current.value = 'Food';
+    refConcept.current.value = '';
+    refAmount.current.value = '';
+    refIsIncome.current.value = 'false';
   }
 
   return (
@@ -42,7 +49,8 @@ function MovementForm() {
           id='category'
           className='select mb-2 '
           required
-          ref={refCategory}>
+          ref={refCategory}
+        >
           <option value='Food'>Food</option>
           <option value='House'>House</option>
           <option value='Skincare'>Skincare</option>
@@ -81,7 +89,12 @@ function MovementForm() {
         <label htmlFor='type' className='label'>
           Income/Expense
         </label>
-        <select id='type' className='select mb-2' ref={refIsIncome} required>
+        <select
+          id='type'
+          className='select mb-2'
+          ref={refIsIncome}
+          required
+        >
           <option value='false'>Expense</option>
           <option value='true'>Income</option>
         </select>
@@ -89,7 +102,8 @@ function MovementForm() {
         <button
           type='submit'
           className='btn btn-neutral btn-outline mt-1'
-          onClick={(e) => onSubmit(e)}>
+          onClick={(e) => onSubmit(e)}
+        >
           Add
         </button>
       </fieldset>

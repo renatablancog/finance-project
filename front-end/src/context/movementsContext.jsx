@@ -17,7 +17,7 @@ function MovementsProvider({ children }) {
 
   const sharedValue = {
     //Esta es la funcion que hace fetch, encapsulada dentro de un objeto, para ponerla a disposición de quien la necesite
-    fetchMovements: async function (limit = 14, offset = 0) {
+    fetchMovements: async function (limit = 3, offset = 0) {
       const { data } = await axios.get(
         `${BASE_URL}/movements?limit=${limit}&offset=${offset}`
       );
