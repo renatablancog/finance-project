@@ -10,9 +10,6 @@ function MovementsProvider({ children }) {
   const [incomes, setIncomes] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [savings, setSavings] = useState(0);
-  const [categoryMostExpenses, setCategoryMostExpenses] = useState(
-    []
-  );
   const [monthlySummary, setMonthlySummary] = useState([]);
 
   const sharedValue = {
@@ -22,7 +19,6 @@ function MovementsProvider({ children }) {
         `${BASE_URL}/movements?limit=${limit}&offset=${offset}`
       );
       setMovements(data);
-      console.log(data);
     },
     handleMovementFormSubmit: async function (
       categoryValue,
@@ -77,12 +73,13 @@ function MovementsProvider({ children }) {
       );
       setSavings(data.savings);
     },
-    fetchCategoryWithMostExpenses: async function () {
+    fetchCategoryWithMostExpenses: async function (period = 'year') {
+      //year, month, week
       const { data } = await axios.get(
-        `${BASE_URL}/expenses/category-most-expenses`
+        `${BASE_URL}/expenses/category-most-expenses?period=${period}`
       );
 
-      setCategoryMostExpenses(data);
+      return data[0];
     },
     fetchMonthlySummary: async function () {
       const { data } = await axios.get(
@@ -100,7 +97,6 @@ function MovementsProvider({ children }) {
     incomes,
     expenses,
     savings,
-    categoryMostExpenses,
     monthlySummary,
   };
 

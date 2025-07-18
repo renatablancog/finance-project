@@ -1,5 +1,6 @@
 import { useRef, useContext } from 'react';
 import { MovementsContext } from '../../context/movementsContext';
+import { MdAddCard } from 'react-icons/md';
 
 function MovementForm() {
   const { handleMovementFormSubmit } = useContext(MovementsContext);
@@ -21,8 +22,7 @@ function MovementForm() {
     const categoryValue = refCategory.current.value;
     const conceptValue = refConcept.current.value;
     const amountValue = refAmount.current.value;
-    const isIncomeValue =
-      refIsIncome.current.value === 'true' ? true : false;
+    const isIncomeValue = refIsIncome.current.value === 'true' ? true : false;
 
     handleMovementFormSubmit(
       categoryValue,
@@ -40,7 +40,10 @@ function MovementForm() {
 
   return (
     <form className='mx-7 my-6'>
-      <div className='text-l font-bold mb-2'>Add Movement</div>
+      <div className='text-l font-bold mb-2 flex items-center'>
+        <MdAddCard className='mx-2' />
+        Add Movement
+      </div>
       <fieldset className='fieldset bg-base-200 border-base-300 rounded-box w-full border p-4'>
         <label htmlFor='category' className='label'>
           Category
@@ -89,12 +92,7 @@ function MovementForm() {
         <label htmlFor='type' className='label'>
           Income/Expense
         </label>
-        <select
-          id='type'
-          className='select mb-2'
-          ref={refIsIncome}
-          required
-        >
+        <select id='type' className='select mb-2' ref={refIsIncome} required>
           <option value='false'>Expense</option>
           <option value='true'>Income</option>
         </select>

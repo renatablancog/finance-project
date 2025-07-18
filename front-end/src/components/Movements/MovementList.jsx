@@ -2,6 +2,7 @@ import React from 'react';
 import MovementItem from './MovementItem';
 import { useContext, useEffect } from 'react';
 import { MovementsContext } from '../../context/movementsContext';
+import { LuReceipt } from 'react-icons/lu';
 
 function MovementList() {
   const { fetchMovements, movements, handleDeleteMovement } =
@@ -14,7 +15,10 @@ function MovementList() {
 
   return (
     <div className='flex flex-col mx-7 my-6'>
-      <div className='text-l font-bold mb-2 '>Last 3 Movements</div>
+      <div className='text-l font-bold mb-2 flex items-center'>
+        <LuReceipt className='mx-2' />
+        Last 3 Movements
+      </div>
       {/* pagination */}
       <div className='join grid grid-cols-2 mb-2'>
         <button className='join-item btn text-primary text-xs btn-xs'>

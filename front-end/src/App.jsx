@@ -22,10 +22,12 @@ function App() {
       <Title title='Main Dashboard' icon='📊' />
       <div className='flex gap-4'>
         <KPICard action='totalAvailableMoney' />
-        <KPICard action='categoryMaxExpense' />
+        <KPICard action='categoryMaxExpense' period='year' />
+        <KPICard action='categoryMaxExpense' period='month' />
+        <KPICard action='categoryMaxExpense' period='week' />
       </div>
 
-      <div className='grid grid-cols-3 grid-rows-2 gap-4'>
+      <div className='grid grid-cols-2 grid-rows-1 gap-4'>
         <Card title='Yearly Income Tracking'>
           <PieChart movements={incomes} />
         </Card>

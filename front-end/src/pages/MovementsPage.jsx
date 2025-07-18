@@ -9,7 +9,9 @@ function MovementsPage() {
       <Title title='Movements' icon='🏦' />
       <div className='mx-7 flex gap-4'>
         <KPICard action='totalAvailableMoney' />
-        <KPICard action='categoryMaxExpense' />
+        <KPICard action='categoryMaxExpense' period='year' />
+        <KPICard action='categoryMaxExpense' period='month' />
+        <KPICard action='categoryMaxExpense' period='week' />
       </div>
       <div className='flex'>
         <MovementForm />

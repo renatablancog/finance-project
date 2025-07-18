@@ -1,16 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { MovementsContext } from '../../context/movementsContext';
 
-function KPICard({ action }) {
-  const {
-    fetchSavings,
-    savings,
-    fetchCategoryWithMostExpenses,
-    categoryMostExpenses,
-  } = useContext(MovementsContext);
+function KPICard({ action, period }) {
+  const { fetchSavings, savings, fetchCategoryWithMostExpenses } =
+    useContext(MovementsContext);
 
-  //KPIS
+  const [categoryMostExpenses, setCategoryMostExpenses] = useState('');
+  const [categoryTotals, setCategoryTotals] = useState(0);
+
+  //KPIS;
   const KPIToFetch = {
     totalAvailableMoney: {
       fetch: fetchSavings,
@@ -18,25 +17,34 @@ function KPICard({ action }) {
       amount: savings,
     },
     categoryMaxExpense: {
-      fetch: fetchCategoryWithMostExpenses,
+      fetch: () => fetchCategoryWithMostExpenses(period),
       title: 'Category with Most Expenses',
       amount: 0,
     },
   };
 
   useEffect(() => {
-    KPIToFetch[action].fetch();
+    if (action !== 'totalAvailableMoney') {
+      async function fetchKPIData() {
+        const { category, categoryTotals } = await KPIToFetch[action].fetch();
+        setCategoryMostExpenses(category);
+        setCategoryTotals(categoryTotals);
+      }
+      fetchKPIData();
+    } else {
+      KPIToFetch[action].fetch();
+    }
   }, []);
 
-  //Special case for card of category with most expenses
-  if (
-    categoryMostExpenses.length > 0 &&
-    action === 'categoryMaxExpense'
-  ) {
-    KPIToFetch[action].amount =
-      categoryMostExpenses[0].categoryTotals;
+  // Special case for card of category with most expenses
+  if (categoryMostExpenses.length > 0 && action === 'categoryMaxExpense') {
+    KPIToFetch[action].amount = categoryTotals;
     KPIToFetch[action].title +=
-      ': ' + categoryMostExpenses[0].category;
+      ' in the ' +
+      period.charAt(0).toUpperCase() +
+      period.slice(1) +
+      ': ' +
+      categoryMostExpenses;
   }
 
   const backgroundColor = {
@@ -44,12 +52,11 @@ function KPICard({ action }) {
     red: 'bg-error',
   };
 
-  const chooseColor =
-    savings > 0 ? backgroundColor.green : backgroundColor.red;
+  const chooseColor = savings > 0 ? backgroundColor.green : backgroundColor.red;
 
   return (
     <div
-      className={`card w-60 bg-card-xs shadow-sm mb-6 text-white ${chooseColor}`}
+      className={`card w-80 bg-card-xs shadow-sm mb-6 text-white ${chooseColor}`}
     >
       <div className='card-body'>
         <h2 className='card-title'>{KPIToFetch[action].title}</h2>
