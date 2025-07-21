@@ -1,17 +1,32 @@
 import React from 'react';
 import MovementItem from './MovementItem';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { MovementsContext } from '../../context/movementsContext';
 import { LuReceipt } from 'react-icons/lu';
 
 function MovementList() {
-  const { fetchMovements, movements, handleDeleteMovement } =
+  const [currentPage, setCurrentPage] = useState(0);
+  const { fetchMovements, movements, handleDeleteMovement, totalPages } =
     useContext(MovementsContext);
-  // Use Effect permite ejecutar código durante un punto específico del ciclo de vida de un componente lo que especifica en que momento del ciclo de vida, son los corchetes, si no hay corchetes va a ser siempre que se muestre el componente, si son vacíos los corchetes solo va a ser la primera vez que el componente se muestre, si hay variables dentro de los corchetes se va a ejecutar cada vez que el valor de esas variables cambie
+  const limit = 3;
 
+  // Use Effect permite ejecutar código durante un punto específico del ciclo de vida de un componente lo que especifica en que momento del ciclo de vida, son los corchetes, si no hay corchetes va a ser siempre que se muestre el componente, si son vacíos los corchetes solo va a ser la primera vez que el componente se muestre, si hay variables dentro de los corchetes se va a ejecutar cada vez que el valor de esas variables cambie
   useEffect(() => {
-    fetchMovements();
-  }, []);
+    const offset = limit * currentPage;
+    fetchMovements(limit, offset);
+  }, [currentPage]);
+
+  function handlePrevPage() {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  }
+
+  function handleNextPage() {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  }
 
   return (
     <div className='flex flex-col mx-7 my-6'>
@@ -21,14 +36,22 @@ function MovementList() {
       </div>
       {/* pagination */}
       <div className='join grid grid-cols-2 mb-2'>
-        <button className='join-item btn text-primary text-xs btn-xs'>
+        <button
+          className='join-item btn text-primary text-xs btn-xs'
+          onClick={handlePrevPage}
+          disabled={currentPage === 0}
+        >
           Previous
         </button>
-        <button className='join-item btn text-primary text-xs btn-xs'>
+        <button
+          className='join-item btn text-primary text-xs btn-xs'
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages - 1}
+        >
           Next
         </button>
       </div>
-
+      {/*movements list */}
       <ul className='w-63 list bg-base-100 rounded-box shadow-md'>
         {movements.map((movement) => {
           return (

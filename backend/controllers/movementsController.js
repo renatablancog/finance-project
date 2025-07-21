@@ -5,17 +5,27 @@ export function getMovements(request, response) {
   // Go to DB to retrieve all movements
   const { limit, offset } = request.query;
 
-  const query = `SELECT * FROM movements 
+  const totalQuery = `SELECT COUNT(*) AS totalRows FROM movements`;
+  const query = ` SELECT * FROM movements 
                   ORDER BY date DESC
                   LIMIT ${Number(limit)} OFFSET ${Number(offset)} `;
 
-  connection.all(query, (err, rows) => {
+  connection.get(totalQuery, (err, row) => {
     if (err) {
       response.status(500).json({ error: err.message });
       return;
     }
 
-    response.status(200).json(rows);
+    const totalPages = Math.ceil(Number(row.totalRows) / Number(limit));
+
+    connection.all(query, (err, rows) => {
+      if (err) {
+        response.status(500).json({ error: err.message });
+        return;
+      }
+
+      response.status(200).json({ totalPages, rows });
+    });
   });
 }
 
@@ -76,9 +86,7 @@ export function deleteMovement(request, response) {
       return;
     }
 
-    response
-      .status(200)
-      .json({ message: 'Movement deleted', deletedId: id });
+    response.status(200).json({ message: 'Movement deleted', deletedId: id });
   });
 }
 

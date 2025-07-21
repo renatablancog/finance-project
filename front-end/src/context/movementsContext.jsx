@@ -11,6 +11,7 @@ function MovementsProvider({ children }) {
   const [expenses, setExpenses] = useState([]);
   const [savings, setSavings] = useState(0);
   const [monthlySummary, setMonthlySummary] = useState([]);
+  const [totalPages, setTotaPages] = useState(0);
 
   const sharedValue = {
     //Esta es la funcion que hace fetch, encapsulada dentro de un objeto, para ponerla a disposición de quien la necesite
@@ -18,7 +19,8 @@ function MovementsProvider({ children }) {
       const { data } = await axios.get(
         `${BASE_URL}/movements?limit=${limit}&offset=${offset}`
       );
-      setMovements(data);
+      setMovements(data.rows);
+      setTotaPages(data.totalPages);
     },
     handleMovementFormSubmit: async function (
       categoryValue,
@@ -37,19 +39,14 @@ function MovementsProvider({ children }) {
         income: isIncomeValue,
       };
 
-      const response = await axios.post(
-        `${BASE_URL}/movements`,
-        newMovement
-      );
+      const response = await axios.post(`${BASE_URL}/movements`, newMovement);
 
       if (response.status === 200) {
         await sharedValue.refetch();
       }
     },
     handleDeleteMovement: async function (id) {
-      const response = await axios.delete(
-        `${BASE_URL}/movements/${id}`
-      );
+      const response = await axios.delete(`${BASE_URL}/movements/${id}`);
 
       if (response.status === 200) {
         await sharedValue.refetch();
@@ -61,16 +58,12 @@ function MovementsProvider({ children }) {
       setIncomes(data);
     },
     fetchExpenses: async function () {
-      const { data } = await axios.get(
-        `${BASE_URL}/expenses/summary`
-      );
+      const { data } = await axios.get(`${BASE_URL}/expenses/summary`);
 
       setExpenses(data);
     },
     fetchSavings: async function () {
-      const { data } = await axios.get(
-        `${BASE_URL}/movements/savings`
-      );
+      const { data } = await axios.get(`${BASE_URL}/movements/savings`);
       setSavings(data.savings);
     },
     fetchCategoryWithMostExpenses: async function (period = 'year') {
@@ -82,9 +75,7 @@ function MovementsProvider({ children }) {
       return data[0];
     },
     fetchMonthlySummary: async function () {
-      const { data } = await axios.get(
-        `${BASE_URL}/movements/monthly-summary`
-      );
+      const { data } = await axios.get(`${BASE_URL}/movements/monthly-summary`);
       setMonthlySummary(data);
     },
     refetch: async function () {
@@ -98,6 +89,7 @@ function MovementsProvider({ children }) {
     expenses,
     savings,
     monthlySummary,
+    totalPages,
   };
 
   return (
