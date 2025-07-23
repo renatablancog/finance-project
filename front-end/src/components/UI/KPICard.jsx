@@ -34,7 +34,7 @@ function KPICard({ action, period }) {
     } else {
       KPIToFetch[action].fetch();
     }
-  }, []);
+  }, [savings]);
 
   // Special case for card of category with most expenses
   if (categoryMostExpenses.length > 0 && action === 'categoryMaxExpense') {

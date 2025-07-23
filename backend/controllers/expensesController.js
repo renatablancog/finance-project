@@ -19,7 +19,6 @@ export function getExpensesSummary(request, response) {
 
 export function getCategoryWithMaxExpense(request, response) {
   const { period } = request.query;
-  console.log(period);
 
   let filter = '';
   switch (period) {

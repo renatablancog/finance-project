@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="nord">
+<html id="theme-html" lang="en" data-theme="nord">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -9,5 +9,12 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      if (!localStorage.getItem('finance-app-theme')) {
+        localStorage.setItem('finance-app-theme', 'nord');
+      }
+      const theme = localStorage.getItem('finance-app-theme');
+      document.getElementById('theme-html').setAttribute('data-theme', theme);
+    </script>
   </body>
 </html>
