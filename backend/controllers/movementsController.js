@@ -6,7 +6,9 @@ export function getMovements(request, response) {
   const { limit, offset } = request.query;
 
   const totalQuery = `SELECT COUNT(*) AS totalRows FROM movements`;
-  const query = ` SELECT * FROM movements 
+  const query = ` SELECT c.name AS category, m.concept, m.amount, m.income, m.date
+                  FROM movements AS m INNER JOIN categories AS c
+                  ON m.category = c.id
                   ORDER BY date DESC
                   LIMIT ${Number(limit)} OFFSET ${Number(offset)} `;
 
@@ -35,7 +37,7 @@ export function getSavings(request, response) {
         WHEN income = 0 THEN -amount 
         ELSE amount 
       END) AS savings
-    FROM movements`;
+    FROM movements JOIN categories`;
 
   connection.get(query, (err, row) => {
     if (err) {
@@ -50,7 +52,7 @@ export function getSavings(request, response) {
 export function getMovementById(request, response) {
   const { id } = request.params;
 
-  const query = 'SELECT * FROM movements WHERE id=(?)';
+  const query = 'SELECT * FROM movements JOIN categories WHERE id=(?)';
 
   connection.get(query, id, (err, row) => {
     if (err) {
@@ -63,7 +65,7 @@ export function getMovementById(request, response) {
 }
 
 export function getIncomes(request, response) {
-  const query = 'SELECT * FROM movements WHERE income=1';
+  const query = 'SELECT * FROM movements JOIN categories WHERE income=1';
 
   connection.all(query, (err, rows) => {
     if (err) {
@@ -130,7 +132,7 @@ export function getMonthlySummary(request, response) {
     (substr(TRIM(date), 6, 5)|| '-' || substr(TRIM(date), 4, 2)) AS YearMonth,
     SUM(CASE WHEN income != 0 THEN amount ELSE 0 END) AS TotalIncomes,
     SUM(CASE WHEN income = 0 THEN amount ELSE 0 END) AS TotalExpenses
-    FROM movements
+    FROM movements 
   GROUP BY YearMonth
   ORDER BY YearMonth;
     `;

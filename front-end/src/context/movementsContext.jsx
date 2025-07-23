@@ -19,6 +19,7 @@ function MovementsProvider({ children }) {
       const { data } = await axios.get(
         `${BASE_URL}/movements?limit=${limit}&offset=${offset}`
       );
+      console.log('data movements', data);
       setMovements(data.rows);
       setTotaPages(data.totalPages);
     },

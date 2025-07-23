@@ -1,10 +1,23 @@
-import { useRef, useContext } from 'react';
+import { useRef, useContext, useEffect, useState } from 'react';
+import axios from 'axios';
 import { MovementsContext } from '../../context/movementsContext';
 import { MdAddCard } from 'react-icons/md';
 
 function MovementForm() {
   const { handleMovementFormSubmit } = useContext(MovementsContext);
+  const [categories, setCategories] = useState([]);
+  const [showInput, setShowInput] = useState(false);
+  const BASE_URL = import.meta.env.VITE_API_BASE;
 
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  async function fetchCategories() {
+    const { data } = await axios.get(`${BASE_URL}/categories`);
+    console.log('data categories', data);
+    setCategories(data);
+  }
   /**
    * Crear las ref a los valores del form
    * Crear una funcion que valide los valores de las ref
@@ -15,6 +28,7 @@ function MovementForm() {
   const refConcept = useRef('');
   const refAmount = useRef('');
   const refIsIncome = useRef('');
+  const refNewCategory = useRef('');
 
   function onSubmit(e) {
     e.preventDefault();
@@ -38,32 +52,90 @@ function MovementForm() {
     refIsIncome.current.value = 'false';
   }
 
+  async function handleCreateNewCategory() {
+    const newCategory = refNewCategory.current.value;
+
+    const response = await axios.post(`${BASE_URL}/categories`, {
+      name: newCategory,
+    });
+    if (response.status === 200) {
+      fetchCategories();
+    }
+
+    setShowInput((prev) => !prev);
+  }
+
   return (
     <form className='mx-7 my-6'>
+      {/**Title*/}
       <div className='text-l font-bold mb-2 flex items-center'>
         <MdAddCard className='mx-2' />
         Add Movement
       </div>
+      {/**Form*/}
       <fieldset className='fieldset bg-base-200 border-base-300 rounded-box w-full border p-4'>
-        <label htmlFor='category' className='label'>
-          Category
-        </label>
-        <select
-          id='category'
-          className='select mb-2 '
-          required
-          ref={refCategory}
-        >
-          <option value='Food'>Food</option>
-          <option value='House'>House</option>
-          <option value='Skincare'>Skincare</option>
-          <option value='Dogs'>Dogs</option>
-          <option value='Shopping'>Shopping</option>
-          <option value='Salary'>Salary</option>
-          <option value='Gift'>Gift</option>
-          <option value='Other'>Other</option>
-        </select>
-
+        {/**Input Categories*/}
+        {!showInput ? (
+          <div>
+            <label htmlFor='category' className='label'>
+              Category
+            </label>
+            <select
+              id='category'
+              className='select mb-2 '
+              required
+              ref={refCategory}
+            >
+              {categories.map((category) => {
+                return (
+                  <option value={category.id} key={category.id}>
+                    {category.name}
+                  </option>
+                );
+              })}
+            </select>
+            <button
+              className='btn btn-xs btn-outline btn-info'
+              onClick={() => setShowInput((prev) => !prev)}
+            >
+              New Category
+            </button>
+          </div>
+        ) : (
+          {
+            /**Add Category*/
+          }(
+            <div>
+              <label htmlFor='newCategory' className='label'>
+                New Category
+              </label>
+              <input
+                id='newCategory'
+                type='text'
+                className='input'
+                placeholder='Shopping'
+                ref={refNewCategory}
+              />
+              <div className='flex gap-2'>
+                <button
+                  type='button'
+                  className='btn btn-xs btn-outline btn-info mt-2'
+                  onClick={handleCreateNewCategory}
+                >
+                  OK
+                </button>
+                <button
+                  type='button'
+                  className='btn btn-xs btn-outline btn-info mt-2'
+                  onClick={() => setShowInput((prev) => !prev)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )
+        )}
+        {/**Concept*/}
         <label htmlFor='concept' className='label'>
           Concept
         </label>
@@ -75,7 +147,7 @@ function MovementForm() {
           placeholder='Fruit'
           required
         />
-
+        {/**Amount*/}
         <label htmlFor='amount' className='label'>
           Amount
         </label>
@@ -88,7 +160,7 @@ function MovementForm() {
           min='0'
           required
         />
-
+        {/**Income/Expense*/}
         <label htmlFor='type' className='label'>
           Income/Expense
         </label>
@@ -96,7 +168,7 @@ function MovementForm() {
           <option value='false'>Expense</option>
           <option value='true'>Income</option>
         </select>
-
+        {/**Submit*/}
         <button
           type='submit'
           className='btn btn-neutral btn-outline mt-1'

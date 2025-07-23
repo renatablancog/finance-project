@@ -3,7 +3,7 @@ import { connection } from '../session.js';
 export function getExpensesSummary(request, response) {
   const query = `SELECT category, SUM(CASE WHEN income = 0 
     THEN amount ELSE 0 END) AS categoryTotals 
-    FROM movements
+    FROM movements JOIN categories
     GROUP BY category
     HAVING categoryTotals > 0
     `;
@@ -37,7 +37,7 @@ export function getCategoryWithMaxExpense(request, response) {
 
   const query = `
   SELECT category, SUM(CASE WHEN income = 0 THEN amount ELSE 0 END) AS categoryTotals
-  FROM movements
+  FROM movements JOIN categories
   WHERE ${filter}
   GROUP BY category
   HAVING categoryTotals > 0
