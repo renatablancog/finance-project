@@ -6,7 +6,7 @@ export function getMovements(request, response) {
   const { limit, offset } = request.query;
 
   const totalQuery = `SELECT COUNT(*) AS totalRows FROM movements`;
-  const query = ` SELECT c.name AS category, m.concept, m.amount, m.income, m.date
+  const query = ` SELECT m.id, c.name AS category, m.concept, m.amount, m.income, m.date
                   FROM movements AS m INNER JOIN categories AS c
                   ON m.category = c.id
                   ORDER BY date DESC
@@ -37,7 +37,7 @@ export function getSavings(request, response) {
         WHEN income = 0 THEN -amount 
         ELSE amount 
       END) AS savings
-    FROM movements JOIN categories`;
+    FROM movements`;
 
   connection.get(query, (err, row) => {
     if (err) {
@@ -51,8 +51,10 @@ export function getSavings(request, response) {
 
 export function getMovementById(request, response) {
   const { id } = request.params;
-
-  const query = 'SELECT * FROM movements JOIN categories WHERE id=(?)';
+  console.log('soy el back', id);
+  const query = `SELECT m.id, c.name AS category, m.concept, m.amount, m.income, m.date FROM movements AS m INNER JOIN categories AS c 
+             ON m.category = c.id
+             WHERE m.id=(?)`;
 
   connection.get(query, id, (err, row) => {
     if (err) {
@@ -65,7 +67,8 @@ export function getMovementById(request, response) {
 }
 
 export function getIncomes(request, response) {
-  const query = 'SELECT * FROM movements JOIN categories WHERE income=1';
+  const query =
+    'SELECT m.id, c.name AS category, m.concept, m.amount, m.income, m.date FROM movements AS m INNER JOIN categories AS c ON m.category = c.id WHERE income=1';
 
   connection.all(query, (err, rows) => {
     if (err) {
@@ -93,7 +96,6 @@ export function deleteMovement(request, response) {
 }
 
 export function addMovement(request, response) {
-  console.log('New movement:', request.body);
   const { category, concept, amount, income } = request.body;
   const newMovement = {
     category,

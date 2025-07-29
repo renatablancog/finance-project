@@ -39,15 +39,13 @@ function MovementList() {
         <button
           className='join-item btn text-primary text-xs btn-xs'
           onClick={handlePrevPage}
-          disabled={currentPage === 0}
-        >
+          disabled={currentPage === 0}>
           Previous
         </button>
         <button
           className='join-item btn text-primary text-xs btn-xs'
           onClick={handleNextPage}
-          disabled={currentPage === totalPages - 1}
-        >
+          disabled={currentPage === totalPages - 1}>
           Next
         </button>
       </div>

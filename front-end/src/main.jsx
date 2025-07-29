@@ -29,7 +29,6 @@ const router = createBrowserRouter([
               let { data } = await axios.get(
                 `http://localhost:3001/movements/${params.id}`
               );
-              console.log(data);
               return { movement: data };
             },
             Component: MovementDetailsPage,

@@ -9,13 +9,13 @@ function MovementForm() {
   const [showInput, setShowInput] = useState(false);
   const BASE_URL = import.meta.env.VITE_API_BASE;
 
+  //Consuming from database the categories
   useEffect(() => {
     fetchCategories();
   }, []);
 
   async function fetchCategories() {
     const { data } = await axios.get(`${BASE_URL}/categories`);
-    console.log('data categories', data);
     setCategories(data);
   }
   /**
@@ -84,8 +84,7 @@ function MovementForm() {
               id='category'
               className='select mb-2 '
               required
-              ref={refCategory}
-            >
+              ref={refCategory}>
               {categories.map((category) => {
                 return (
                   <option value={category.id} key={category.id}>
@@ -96,8 +95,7 @@ function MovementForm() {
             </select>
             <button
               className='btn btn-xs btn-outline btn-info'
-              onClick={() => setShowInput((prev) => !prev)}
-            >
+              onClick={() => setShowInput((prev) => !prev)}>
               New Category
             </button>
           </div>
@@ -120,15 +118,13 @@ function MovementForm() {
                 <button
                   type='button'
                   className='btn btn-xs btn-outline btn-info mt-2'
-                  onClick={handleCreateNewCategory}
-                >
+                  onClick={handleCreateNewCategory}>
                   OK
                 </button>
                 <button
                   type='button'
                   className='btn btn-xs btn-outline btn-info mt-2'
-                  onClick={() => setShowInput((prev) => !prev)}
-                >
+                  onClick={() => setShowInput((prev) => !prev)}>
                   Cancel
                 </button>
               </div>
@@ -172,8 +168,7 @@ function MovementForm() {
         <button
           type='submit'
           className='btn btn-neutral btn-outline mt-1'
-          onClick={(e) => onSubmit(e)}
-        >
+          onClick={(e) => onSubmit(e)}>
           Add
         </button>
       </fieldset>

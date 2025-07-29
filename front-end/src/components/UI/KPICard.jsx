@@ -18,7 +18,7 @@ function KPICard({ action, period }) {
     },
     categoryMaxExpense: {
       fetch: () => fetchCategoryWithMostExpenses(period),
-      title: 'Category with Most Expenses',
+      title: 'Category with Most Expenses in the',
       amount: 0,
     },
   };
@@ -37,18 +37,18 @@ function KPICard({ action, period }) {
   }, [savings]);
 
   // Special case for card of category with most expenses
+  let titleComplement = '';
   if (categoryMostExpenses.length > 0 && action === 'categoryMaxExpense') {
     KPIToFetch[action].amount = categoryTotals;
-    KPIToFetch[action].title +=
-      ' in the ' +
-      period.charAt(0).toUpperCase() +
-      period.slice(1) +
-      ': ' +
-      categoryMostExpenses;
+    titleComplement = (
+      <>
+        {period}: {categoryMostExpenses}
+      </>
+    );
   }
 
   const backgroundColor = {
-    green: 'bg-success',
+    green: 'bg-info',
     red: 'bg-error',
   };
 
@@ -56,10 +56,15 @@ function KPICard({ action, period }) {
 
   return (
     <div
-      className={`card w-80 bg-card-xs shadow-sm mb-6 text-white ${chooseColor}`}
-    >
+      className={`card w-80 bg-card-xs shadow-sm mb-6 text-white ${chooseColor}`}>
       <div className='card-body'>
-        <h2 className='card-title'>{KPIToFetch[action].title}</h2>
+        <h2 className='card-title inline'>
+          {KPIToFetch[action].title}{' '}
+          <span className='card-title inline capitalize text-warning'>
+            {titleComplement}
+          </span>
+        </h2>
+
         <h3 className='card-title'>${KPIToFetch[action].amount}</h3>
       </div>
     </div>

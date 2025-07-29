@@ -1,10 +1,11 @@
 import { connection } from '../session.js';
 
 export function getExpensesSummary(request, response) {
-  const query = `SELECT category, SUM(CASE WHEN income = 0 
-    THEN amount ELSE 0 END) AS categoryTotals 
-    FROM movements JOIN categories
-    GROUP BY category
+  const query = `SELECT c.name AS category, SUM(CASE WHEN m.income = 0 
+    THEN m.amount ELSE 0 END) AS categoryTotals 
+    FROM movements AS m INNER JOIN categories AS c
+    ON m.category = c.id
+    GROUP BY m.category
     HAVING categoryTotals > 0
     `;
 
@@ -36,10 +37,11 @@ export function getCategoryWithMaxExpense(request, response) {
   }
 
   const query = `
-  SELECT category, SUM(CASE WHEN income = 0 THEN amount ELSE 0 END) AS categoryTotals
-  FROM movements JOIN categories
+  SELECT c.name AS category, SUM(CASE WHEN m.income = 0 THEN m.amount ELSE 0 END) AS categoryTotals
+  FROM movements AS m INNER JOIN categories AS c
+  ON m.category = c.id
   WHERE ${filter}
-  GROUP BY category
+  GROUP BY m.category
   HAVING categoryTotals > 0
   ORDER BY categoryTotals DESC
   LIMIT 1
