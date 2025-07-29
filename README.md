@@ -21,19 +21,21 @@ Track income, expenses, and category-based spending insights with a responsive a
 - Top category spendings
 - SQLite database with basic persistence
 - REST API with Express
-- Responsive frontend using React + Tailwind CSS
+  -- 🌗 **Theme selector** for light/dark mode and accessibility
 
 ---
 
 ## 🧱 Tech Stack
 
 **Frontend:**
+
 - React
 - Vite
 - Tailwind CSS
 - Context API
 
 **Backend:**
+
 - Node.js
 - Express
 - SQLite3
@@ -47,3 +49,4 @@ Track income, expenses, and category-based spending insights with a responsive a
 ```bash
 git clone https://github.com/renatablancog/finance-project.git
 cd finance-project
+```
